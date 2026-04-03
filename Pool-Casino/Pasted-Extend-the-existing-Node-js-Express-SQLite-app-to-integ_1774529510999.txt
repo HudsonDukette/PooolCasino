@@ -1,0 +1,224 @@
+Extend the existing Node.js + Express + SQLite app to integrate the CrazyGames SDK user authentication system.
+
+Use documentation:
+https://docs.crazygames.com/sdk/user/#account-link-prompt
+
+---
+
+# 🧠 GOAL
+
+Implement a hybrid authentication system with these rules:
+
+---
+
+# 🌐 ENVIRONMENT DETECTION
+
+On frontend load:
+
+* Detect if app is running on CrazyGames using the SDK
+* Example:
+
+  * window.CrazyGames exists → ON CrazyGames
+  * otherwise → OFF platform
+
+Store this as:
+isCrazyGames = true/false
+
+---
+
+# 👤 AUTH RULES
+
+## CASE 1: User is ON CrazyGames
+
+### Signup:
+
+* DISABLE username/password signup
+* User must sign up using CrazyGames account only
+
+### Login:
+
+If NOT logged in:
+
+* Show:
+
+  * "Login with CrazyGames" button ONLY
+
+If already logged in locally:
+
+* Offer:
+
+  * Continue with existing account
+  * OR link CrazyGames account
+
+---
+
+## CASE 2: User is OFF CrazyGames
+
+### Signup:
+
+* Allow username + password signup ONLY
+
+### Login:
+
+* Allow:
+
+  * username/password login
+  * OR CrazyGames login (optional)
+
+---
+
+# 🔗 ACCOUNT LINKING SYSTEM
+
+Add support for linking a CrazyGames account to an existing user.
+
+---
+
+## Database Update (users table):
+
+Add fields:
+
+* crazygames_user_id (nullable, unique)
+* is_crazygames_linked (boolean)
+
+---
+
+## Linking Flow:
+
+If user is logged in locally AND clicks "Link CrazyGames":
+
+1. Call CrazyGames SDK:
+   request user info
+
+2. Get:
+
+   * crazygames user ID
+
+3. Save to DB:
+
+   * attach crazygames_user_id to current user
+
+4. Set:
+   is_crazygames_linked = true
+
+---
+
+## Prevent:
+
+* linking one CrazyGames account to multiple users
+
+---
+
+# 🔐 LOGIN WITH CRAZYGAMES
+
+When user clicks "Login with CrazyGames":
+
+1. Call SDK to get user info
+2. Check database:
+
+### If user exists:
+
+* login that user
+
+### If user does NOT exist:
+
+* create new user:
+
+  * username = "cg_" + random string
+  * no password required
+  * store crazygames_user_id
+
+---
+
+# 🎯 ACCOUNT LINK PROMPT
+
+Implement CrazyGames account-link prompt per docs:
+
+* Trigger when:
+
+  * user logs in locally
+  * AND no CrazyGames account is linked
+  * AND running on CrazyGames
+
+* Show prompt:
+  "Link your CrazyGames account?"
+
+Use SDK method from docs.
+
+---
+
+# 🧱 BACKEND ROUTES
+
+Create:
+
+POST /auth/crazygames/login
+POST /auth/crazygames/link
+
+---
+
+# ⚙️ BACKEND LOGIC
+
+## /auth/crazygames/login
+
+* receive CrazyGames user ID
+* find or create user
+* create session
+
+## /auth/crazygames/link
+
+* require logged-in user
+* attach crazygames_user_id
+* prevent duplicates
+
+---
+
+# 🎨 FRONTEND CHANGES
+
+## Login Page:
+
+Dynamically show:
+
+### If ON CrazyGames:
+
+* "Login with CrazyGames"
+* optionally "Use existing account"
+
+### If OFF CrazyGames:
+
+* username/password login
+* optional CrazyGames login button
+
+---
+
+## Signup Page:
+
+### If ON CrazyGames:
+
+* hide signup form
+* show message:
+  "Sign up using CrazyGames account"
+
+### If OFF:
+
+* normal signup form
+
+---
+
+# 🔒 SECURITY
+
+* Validate CrazyGames user ID server-side
+* Prevent duplicate linking
+* Ensure sessions are secure
+* Do not trust frontend
+
+---
+
+# 🚀 FINAL GOAL
+
+A seamless system where:
+
+* Users on CrazyGames use CrazyGames auth
+* Users off-platform use normal auth
+* Accounts can be linked
+* No duplicate or conflicting accounts occur
+
+Ensure everything runs correctly on Replit and integrates with existing auth system.

@@ -1,0 +1,91 @@
+uploads = []
+
+[[generated]]
+id = "-_kUtUlLFneh7K9AWMAMa"
+uri = "file://artifacts/pool-casino/src/assets/game-blinddraw.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Z9UoMDBFpJTCr8FefnOWs"
+uri = "file://artifacts/pool-casino/src/assets/game-hiddenpath.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "h7CAnyZDbDMz50VejcdC0"
+uri = "file://artifacts/pool-casino/src/assets/game-jackpothunt.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Rm08migxHKNrfD6dYi4Mv"
+uri = "file://artifacts/pool-casino/src/assets/game-targethit.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "lTEG5SLsRgy31SkD22V43"
+uri = "file://artifacts/pool-casino/src/assets/game-chainreaction.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "7vEeh__Znx8maoQF8Boo4"
+uri = "file://artifacts/pool-casino/src/assets/game-timedsafe.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "SGZyG9WqK7ww1ctBNADTt"
+uri = "file://artifacts/pool-casino/src/assets/game-reversecrash.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Np4xl--ixWUeQq9gUYb2T"
+uri = "file://artifacts/pool-casino/src/assets/game-countdown.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "XeV536lNMVIfd7c3WuiKn"
+uri = "file://artifacts/pool-casino/src/assets/game-cardstack.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "L-rk_nQN_nM66yqWurVaY"
+uri = "file://artifacts/pool-casino/src/assets/game-powergrid.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "goIL0JHw-9xUDLH0I70Zr"
+uri = "file://artifacts/pool-casino/src/assets/game-elimwheel.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "TBs4tukkJJyj62DTuiy9m"
+uri = "file://artifacts/pool-casino/src/assets/game-combobuilder.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Kcm8V7J56ZlCkWYGQPkMa"
+uri = "file://artifacts/pool-casino/src/assets/game-safesteps.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "WHk_qfn0McwbbBUYHG-MG"
+uri = "file://artifacts/pool-casino/src/assets/game-predchain.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "WSyQDI4xyjY0xvxQ3Dyx_"
+uri = "file://README.md"
+type = "text"
+title = "README.md — Codespaces + Vercel + Supabase setup guide"

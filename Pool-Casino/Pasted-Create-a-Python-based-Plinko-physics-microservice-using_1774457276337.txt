@@ -1,0 +1,186 @@
+Create a Python-based Plinko physics microservice using Flask that simulates realistic Plinko ball physics and returns results via an API.
+
+This service will be used by a Node.js casino app.
+
+---
+
+# 🧠 OVERVIEW
+
+The system should simulate:
+
+* gravity
+* ball velocity
+* collisions with pegs
+* randomness from physics (not pure RNG)
+
+Return:
+
+* final slot index
+* multiplier
+* path data (for frontend animation)
+
+---
+
+# 📦 TECH STACK
+
+* Python 3
+* Flask
+* No heavy external physics engines (build custom lightweight physics)
+
+---
+
+# ⚙️ CORE PHYSICS RULES
+
+## Constants:
+
+* gravity = 9.8
+* timestep = 0.016 (60 FPS)
+* peg radius = small (e.g. 5 units)
+* ball radius = slightly larger
+
+---
+
+## Simulation Behavior:
+
+1. Ball starts at top center with slight random horizontal velocity
+2. Ball falls due to gravity
+3. Pegs are arranged in a triangular grid
+4. When ball hits a peg:
+
+   * reflect velocity vector
+   * add slight randomness
+5. Apply friction/damping:
+
+   * velocity *= 0.99 each step
+6. Continue until ball reaches bottom
+
+---
+
+# 📐 BOARD SETUP
+
+* Create rows of pegs:
+
+  * row 1: 1 peg
+  * row 2: 2 pegs
+  * row 3: 3 pegs
+  * etc.
+
+* Offset every other row for proper Plinko layout
+
+* Define bottom slots:
+
+  * 9–13 slots recommended
+
+---
+
+# 🎯 MULTIPLIERS
+
+Example (center = safer):
+
+[10x, 5x, 2x, 1x, 0.5x, 1x, 2x, 5x, 10x]
+
+Make configurable.
+
+---
+
+# 🔄 SIMULATION FUNCTION
+
+Create a function:
+
+simulate_plinko(risk_level)
+
+Risk levels:
+
+* "low"
+* "medium"
+* "high"
+
+Adjust:
+
+* peg spacing
+* randomness
+* multiplier distribution
+
+---
+
+# 🌐 API ENDPOINT
+
+POST /simulate
+
+Request JSON:
+{
+"risk": "low"
+}
+
+Response JSON:
+{
+"slot": 4,
+"multiplier": 2.0,
+"path": [
+{"x": 0, "y": 0},
+{"x": 1.2, "y": 3.4},
+...
+]
+}
+
+---
+
+# 🧱 CODE STRUCTURE
+
+plinko_service/
+app.py
+physics.py
+board.py
+config.py
+
+---
+
+# 📄 IMPLEMENTATION DETAILS
+
+## physics.py
+
+* vector math
+* collision detection (circle vs circle)
+* velocity reflection
+
+## board.py
+
+* generate peg positions
+* detect collisions
+
+## config.py
+
+* constants (gravity, spacing, multipliers)
+
+## app.py
+
+* Flask server
+* /simulate endpoint
+
+---
+
+# 🧪 REQUIREMENTS
+
+* Deterministic enough to feel fair
+* Random enough to feel natural
+* Fast (under 100ms per simulation)
+
+---
+
+# 🔗 INTEGRATION NOTES
+
+* This service runs separately from Node.js
+* Node app calls it via HTTP
+* Use returned multiplier to calculate winnings
+
+---
+
+# 🎯 FINAL GOAL
+
+A working Flask API that:
+
+* simulates Plinko physics
+* returns realistic outcomes
+* can be called from a web app
+
+Ensure it runs immediately on Replit and includes instructions to start the server.

@@ -1,0 +1,164 @@
+Create a profanity filtering system for a Node.js (Express) web app.
+
+The system must detect and handle profanity even when users try to bypass filters using:
+
+* leetspeak (e.g. @, 4, 3, 1, 0)
+* spacing (e.g. b a d w o r d)
+* repeated letters (e.g. baaaad)
+* symbols (e.g. b@d, b#ad)
+
+---
+
+# 🧠 CORE FEATURES
+
+## 1. Text Normalization Function
+
+Create a function:
+normalizeText(input)
+
+It should:
+
+* convert to lowercase
+
+* replace common leetspeak:
+  @ → a
+  4 → a
+  3 → e
+  1 → i
+  0 → o
+  5 → s
+  7 → t
+  $ → s
+
+* remove all non-alphanumeric characters
+
+* collapse repeated characters:
+  "heyyy" → "hey"
+
+* remove spacing tricks:
+  "b a d" → "bad"
+
+---
+
+## 2. Profanity Detection
+
+Create:
+checkProfanity(input)
+
+Steps:
+
+1. Normalize text
+2. Check against a base word list (keep small and expandable)
+3. Use:
+
+   * includes()
+   * regex patterns
+4. Add fuzzy matching (simple tolerance for typos)
+
+---
+
+## 3. Tiered System
+
+Return result object:
+
+{
+clean: boolean,
+severity: "none" | "low" | "medium" | "high",
+matched: ["word1", "word2"]
+}
+
+---
+
+## 4. Replacement Function
+
+Create:
+censorText(input)
+
+* Replace detected words with "***"
+* Preserve original sentence structure
+
+---
+
+## 5. Example Word List Structure
+
+Do NOT hardcode massive lists.
+
+Use a small starter list like:
+
+const bannedWords = [
+"badword1",
+"badword2",
+"insult1",
+"insult2"
+];
+
+Make it easy to expand later.
+
+---
+
+## 6. Regex Matching
+
+Support patterns like:
+
+* partial matches
+* repeated characters
+
+Example:
+b+a+d+
+
+---
+
+## 7. Middleware Integration
+
+Create Express middleware:
+
+profanityFilter(req, res, next)
+
+* Scan:
+  req.body
+* If severity = high:
+  block request
+* If medium:
+  allow but flag
+* If low:
+  allow
+
+---
+
+## 8. Logging Integration
+
+Send flagged messages to moderation system:
+
+* store original text
+* normalized text
+* matched words
+* severity
+* timestamp
+
+---
+
+# 🧱 FILE STRUCTURE
+
+/utils/profanity.js
+/middleware/profanityMiddleware.js
+
+---
+
+# ⚡ PERFORMANCE
+
+* Must run fast (<5ms per check)
+* Avoid heavy libraries
+* Use efficient string operations
+
+---
+
+# 🔒 FINAL GOAL
+
+A smart profanity filter that:
+
+* catches bypass attempts
+* avoids false positives
+* integrates with moderation dashboard
+* is easy to expand over time
+
+Ensure code is clean, modular, and ready for production use.

@@ -1,0 +1,140 @@
+Implement a Player-Owned Casino Hub system that integrates with the existing multiplayer casino app and introduces a controlled economy with money sinks.
+
+🏗 CORE CONCEPT
+Each casino is a hub/environment, not just a game list
+Casinos have their own:
+Games tab
+Economy (bankroll)
+Player activity
+Players enter casinos and interact within them like mini-platforms
+💰 CASINO CREATION (ECONOMY SINK)
+Creating a casino costs: 100,000,000 (100M)
+When purchased:
+The full amount is sent back to the main pool (money sink)
+Limit:
+One casino per player (configurable)
+🎮 GAME OWNERSHIP SYSTEM
+Casino owners do NOT automatically get all games
+Each game must be purchased individually
+Cost per game: 1,000,000 (1M)
+
+When purchased:
+
+Money is sent back to the main pool
+Game becomes available in that casino’s “Games” tab
+🧱 CASINO HUB STRUCTURE
+
+Each casino has:
+
+Header (like main app top bar)
+Tabs:
+Games
+Stats
+Logs
+Owner Controls
+Unique identity (name, theme, owner)
+💵 CASINO BANKROLL SYSTEM
+Casino owners must fund their casino manually
+Bankroll is used to:
+Pay out player wins
+If bankroll is too low:
+Bets are restricted automatically
+📉 MONTHLY TAX (CRITICAL ECONOMY CONTROL)
+Every month:
+10% of each casino’s current bankroll is removed
+Sent back to the main pool
+This must run automatically via a scheduled job
+⚙️ OWNER CONTROLS
+
+Casino owners can:
+
+Set:
+Minimum bet
+Maximum bet
+Adjust odds (within safe limits)
+Pause / unpause casino
+Enable/disable owned games
+Deposit / withdraw bankroll
+📊 BET LOGS / ANALYTICS
+
+Owners can view:
+
+All bets placed
+Wins / losses
+Player activity
+Profit over time
+Game performance
+🍹 DRINKS SYSTEM (SOCIAL FLEX FEATURE)
+
+Casino owners can offer “drinks”:
+
+Drink Mechanics:
+Drinks are cosmetic/status items
+Players can purchase drinks inside casinos
+Types:
+Cheap drinks
+Expensive drinks
+Effects:
+Displayed on player profile
+Visible in casino (flex/status symbol)
+🧑‍🤝‍🧑 PLAYER EXPERIENCE
+
+Players can:
+
+Browse casinos
+Join a casino hub
+See:
+Active players
+Available games
+Casino bankroll strength
+Play games within that casino
+🔔 REAL-TIME FEATURES
+Live player count per casino
+Live bankroll updates
+Real-time bet activity (optional feed)
+🧾 DATABASE (SUPABASE)
+
+Create/extend tables:
+
+casinos
+casino_games_owned
+casino_bankroll
+casino_transactions
+casino_bets
+casino_drinks
+user_drinks
+monthly_tax_logs
+🔐 SAFETY RULES
+No casino can go negative
+Max bet auto-adjusts based on bankroll
+Odds adjustments must be capped
+Prevent abuse/exploits
+🎯 UX REQUIREMENTS
+Casino hubs should feel like:
+A “place” players enter
+Smooth transitions between:
+Main app ↔ casino
+Clear visibility of:
+Risk (bankroll size)
+Activity (players inside)
+⚡ INTEGRATION
+Must work alongside:
+Existing PvP matchmaking
+Players can:
+Queue for PvP while inside a casino
+🚫 IMPORTANT RULES
+All casino/game purchases are money sinks (go to main pool)
+Monthly tax enforces long-term balance
+No infinite money generation
+All systems must be server-authoritative
+🧠 PRIORITY ORDER
+Casino creation + cost system
+Game purchasing system
+Casino hub UI (tabs + navigation)
+Bankroll + betting restrictions
+Monthly tax system
+Owner controls
+Drinks system
+Logs + analytics
+
+If anything is unclear, make reasonable assumptions and proceed.

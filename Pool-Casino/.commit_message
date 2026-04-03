@@ -1,0 +1,7 @@
+Add user-adjustable drop delay slider to Plinko
+
+- Added `dropDelay` state (default 400ms) replacing hardcoded BALL_SPAWN_DELAY constant
+- Drop Delay control (slider + −/+ buttons) appears when ball count > 1
+- Range: 50ms–2000ms in 50ms steps; live value display in seconds
+- Slider/buttons disabled while dropping is in progress
+- Added dropDelay to handleDrop useCallback dependency array

@@ -1,0 +1,21 @@
+packages:
+  "framer-motion": "For premium casino game animations, wheel spinning, and ball dropping physics"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to safely merge Tailwind CSS classes"
+  "lucide-react": "Beautiful consistent iconography"
+
+images:
+  - path: "artifacts/pool-casino/public/images/casino-bg.png"
+    description: "Dark, premium abstract background with subtle neon teal and purple light leaks and geometric glassmorphism elements"
+    aspect_ratio: "16:9"
+  - path: "artifacts/pool-casino/public/images/roulette-icon.png"
+    description: "Sleek, glowing neon roulette wheel on a completely dark transparent background, minimal 3d style"
+    aspect_ratio: "1:1"
+  - path: "artifacts/pool-casino/public/images/plinko-icon.png"
+    description: "Sleek, glowing neon plinko pyramid board with falling bright ball on a completely dark transparent background, minimal style"
+    aspect_ratio: "1:1"
+
+notes:
+  - Using generated API client from @workspace/api-client-react
+  - Assuming authentication sets an HTTP-only session cookie
+  - Games require user to be authenticated

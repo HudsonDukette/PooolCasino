@@ -1,0 +1,273 @@
+Extend the existing Node.js + Express + SQLite fake-money casino app by adding **10 additional games** using a modular game system.
+
+All games must:
+
+* Use server-side logic only (no client trust)
+* Integrate with user balances and global pool
+* Log every bet
+* Follow shared payout + probability rules
+* Be easily extendable for future games
+
+---
+
+# 🧱 CORE GAME ENGINE (IMPORTANT)
+
+Create a reusable engine:
+
+function processBet(userId, gameType, betAmount, gameData)
+
+Responsibilities:
+
+* Validate bet (min $0.01, max based on pool)
+* Ensure user has enough balance
+* Calculate outcome
+* Apply house edge
+* Update:
+
+  * user balance
+  * global pool
+* Log bet in DB
+* Return structured result
+
+---
+
+# 🎮 ADD THE FOLLOWING 10 GAMES
+
+---
+
+# 1. 🎯 High-Low Card
+
+## Gameplay:
+
+* Draw a card (1–13)
+* Player guesses if next card is higher or lower
+
+## Logic:
+
+* Random card generation
+
+## Payout:
+
+* correct: 1.8x
+* incorrect: lose
+
+---
+
+# 2. 🎲 Double Dice
+
+## Gameplay:
+
+* Roll 2 dice
+* Bet on:
+
+  * total (2–12)
+  * even/odd
+
+## Payout:
+
+* exact total: up to 10x
+* even/odd: 1.9x
+
+---
+
+# 3. 💣 Risk Ladder
+
+## Gameplay:
+
+* 10 steps ladder
+* each step increases multiplier
+* random fail point
+
+## Player:
+
+* can stop anytime
+
+---
+
+# 4. 🎴 War (card game)
+
+## Gameplay:
+
+* Player vs dealer
+* each draws a card
+
+## Outcome:
+
+* higher card wins
+
+## Payout:
+
+* win: 2x
+* tie: push
+
+---
+
+# 5. 🎯 Target Multiplier
+
+## Gameplay:
+
+* player selects multiplier (1.5x–10x)
+* system rolls random value
+
+## Win:
+
+* if roll ≥ chosen multiplier
+
+---
+
+# 6. 🧊 Ice Break (risk grid)
+
+## Gameplay:
+
+* grid of safe/unsafe tiles
+* each safe click increases multiplier
+
+---
+
+# 7. 🎡 Advanced Wheel
+
+## Gameplay:
+
+* large wheel with:
+
+  * many segments
+  * rare high multipliers
+
+## Use weighted probabilities
+
+---
+
+# 8. 🎲 Number Range Bet
+
+## Gameplay:
+
+* pick range (e.g. 1–20, 1–50, 1–100)
+* random number generated
+
+## Payout:
+
+* smaller range = higher multiplier
+
+---
+
+# 9. 🔺 Pyramid Pick
+
+## Gameplay:
+
+* pick path down pyramid
+* each level = higher multiplier
+* wrong pick = lose
+
+---
+
+# 10. ⚡ Lightning Round
+
+## Gameplay:
+
+* rapid bets over time (auto rounds)
+* player can enable auto-play
+
+---
+
+# 🧠 PROBABILITY SYSTEM
+
+All games must:
+
+* scale odds based on:
+  betAmount / pool
+
+* enforce:
+  max_payout = pool * 0.05
+
+* include house edge (~2–5%)
+
+---
+
+# 🗄️ DATABASE UPDATES
+
+Extend bets table:
+
+* game_data (JSON)
+* outcome_details (JSON)
+
+---
+
+# 🔌 API ROUTES
+
+POST endpoints:
+
+/api/game/highlow
+/api/game/doubledice
+/api/game/ladder
+/api/game/war
+/api/game/target
+/api/game/ice
+/api/game/advwheel
+/api/game/range
+/api/game/pyramid
+/api/game/lightning
+
+---
+
+# 🎨 FRONTEND
+
+## Games Page:
+
+* grid layout
+* each game card clickable
+
+---
+
+## Each Game UI:
+
+* bet input
+* controls
+* result display
+* simple animation
+
+---
+
+# 🧱 FILE STRUCTURE
+
+/server/games/
+highlow.js
+doubledice.js
+ladder.js
+war.js
+target.js
+ice.js
+advwheel.js
+range.js
+pyramid.js
+lightning.js
+
+---
+
+# 🔒 SECURITY
+
+* validate all bets
+* prevent negative balances
+* backend controls all outcomes
+* rate limit endpoints
+
+---
+
+# ⚡ UX
+
+* instant results
+* smooth feedback
+* highlight wins/losses
+* show multipliers clearly
+
+---
+
+# 🚀 FINAL GOAL
+
+A scalable casino system with:
+
+* 10 additional games
+* unified logic
+* shared pool economy
+* consistent UI/UX
+
+Ensure everything runs properly on Replit and integrates with existing system.

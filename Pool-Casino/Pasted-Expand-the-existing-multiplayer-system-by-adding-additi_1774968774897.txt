@@ -1,0 +1,102 @@
+Expand the existing multiplayer system by adding additional real-time multiplayer games and improving the lobby UI.
+
+📊 LOBBY UPGRADE (IMPORTANT)
+Next to each multiplayer game in the lobby, display:
+Number of players currently playing
+Number of players currently queued
+These counts must update in real time using the existing WebSocket system.
+Counts should update without page refresh.
+
+Example display format:
+
+War — 12 playing • 4 waiting
+Higher or Lower — 7 playing • 2 waiting
+🎮 NEW MULTIPLAYER GAMES (13 TOTAL)
+
+Add the following PvP games. All games must use:
+
+The existing matchmaking system
+The existing betting system (average bet rules, no house cut)
+The existing session system and disconnect handling
+1. Coin Flip
+Two players bet
+Heads or tails
+50/50 outcome
+2. Rock Paper Scissors
+Best of X rounds (players vote)
+Classic rules
+3. Blackjack (PvP Variant)
+Both players play against the same deck
+Closest to 21 without busting wins
+No dealer
+4. Poker — 5 Card Showdown
+No betting rounds
+Both players get 5 cards
+Best hand wins
+5. Speed Click
+Both players spam a button for 5 seconds
+Higher click count wins
+Prevent macros/bots with server-side rate limits
+6. Memory Match
+Grid of cards
+Take turns flipping two
+Most pairs wins
+7. Dice Battle
+Both players roll dice simultaneously
+Highest total wins
+Configurable number of dice
+8. Number Guess Duel
+System picks a number
+Players guess
+Closest wins
+9. Reaction Time
+Random delay
+First to react after signal wins
+Early clicks = auto-loss
+10. Tug of War (Timing Game)
+Players tap alternately
+Bar moves left/right
+Reach opponent side to win
+11. Quick Math Duel
+Both players solve simple math problems
+Fastest correct answer wins
+Best of X rounds
+12. Card Draw Race
+Players draw cards
+First to reach target value wins
+Busting loses
+13. Last Man Standing
+Players take turns risking increasing amounts
+First to fail loses
+Simple high-risk gambling mechanic
+🏗 SYSTEM REQUIREMENTS
+
+All games must:
+
+Use existing matchmaking queues
+Use existing betting system
+Handle disconnects (timeouts = forfeit)
+Support multiple simultaneous matches
+Be modular so new games can be added easily
+🧠 SHARED UI RULES
+Each game must have:
+A game screen
+A waiting/ready screen
+Clear win/loss result UI
+Reuse UI components where possible
+🔐 ANTI-CHEAT / SAFETY
+All game outcomes validated server-side
+No client-side RNG trust
+Basic bot prevention for click/timing games
+🎯 PRIORITY ORDER
+Lobby player counts
+Coin Flip, Rock Paper Scissors, Dice Battle (easy wins)
+Blackjack, Poker, Memory Match
+Remaining games
+🚫 IMPORTANT
+No house edge
+No money created or destroyed
+PvP transfers only
+Integrate cleanly with existing codebase
+
+If anything is unclear, make reasonable assumptions and proceed.

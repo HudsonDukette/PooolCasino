@@ -1,0 +1,132 @@
+Build the foundation for real-time multiplayer gameplay in my existing casino app using a scalable, production-ready architecture.
+
+🔧 CORE REQUIREMENTS
+
+Implement real-time multiplayer using:
+
+WebSockets (Socket.IO preferred)
+Server-authoritative game logic (no trusting the client)
+Supabase for accounts, balances, and persistence
+🎮 MULTIPLAYER GAMES (INITIAL)
+1. War (2 Player)
+Each player is dealt a random card
+Higher card wins the round
+Support multiple rounds per match (configurable)
+2. Higher or Lower (Dice)
+Each round:
+A number (1–6) is rolled
+Players predict if the next roll will be higher or lower
+Correct prediction wins the round
+🧠 MATCHMAKING SYSTEM
+
+Create a queue-based matchmaking system:
+
+Players can:
+Queue for a specific game
+Leave queue at any time
+While queued:
+Players can continue using the app / playing other games
+When a match is found:
+Send real-time notification:
+"Match found!"
+Show opponent username
+Give 10 seconds to accept
+If no response → auto-accept
+If player cancels → opponent returns to queue
+💰 BETTING SYSTEM (IMPORTANT RULES)
+Both players submit a bet amount
+Final bet = average of both bets
+BUT:
+If one player has less than the average:
+→ final bet = that player’s FULL balance
+NO HOUSE CUT
+NO POOL USAGE
+Pure PvP money transfer only
+🧾 ROUND & MATCH FLOW
+Before match:
+Both players lock in bets
+During match:
+Players can vote on number of rounds (best of X)
+Use majority vote or fallback default
+If a player’s balance hits 0:
+They instantly lose all active matches
+🏆 BADGE / ACHIEVEMENT SYSTEM
+
+Create a flexible badge system:
+
+Badge Types:
+First time playing a game
+Largest bet ever
+Largest bet per game
+Win streaks
+Multiplayer wins
+Monthly Badges:
+Dynamically generated each month
+Pulled from a large randomized pool of challenges:
+Examples:
+Lose $100,000 total
+Win 10 games in a row
+Win 20 PvP matches
+Must be claimable
+Reset monthly
+Requirements:
+Each badge has:
+Unique name
+Description
+Icon/image
+Store in database
+Track per-user progress
+🔔 NOTIFICATIONS SYSTEM
+Real-time notifications for:
+Match found
+Match starting
+Opponent actions
+Non-blocking UI
+Toast-style popups preferred
+🧱 DATABASE DESIGN (SUPABASE)
+
+Create or extend tables for:
+
+multiplayer_queue
+matches
+match_players
+match_rounds
+bets
+badges
+user_badges
+monthly_challenges
+⚡ TECH REQUIREMENTS
+Must integrate with existing authentication system
+Must be modular (easy to add more games later)
+Must prevent cheating (server validates everything)
+Must handle disconnects gracefully:
+Auto-forfeit after timeout
+🎯 UX REQUIREMENTS
+Queue indicator always visible
+Ability to queue + play other games simultaneously
+Clean transitions into match UI
+Clear win/loss feedback
+🧪 BONUS (IF POSSIBLE)
+Add simple animations for:
+Dice roll
+Card flip
+Add sound effects (optional toggle)
+🚫 IMPORTANT CONSTRAINTS
+NO house money involvement
+NO shared betting pool
+PvP only
+All currency transfers must be player-to-player
+🧩 DELIVERABLES
+Full backend + frontend integration
+Working matchmaking system
+Playable War and Dice games
+Badge system with at least 10 sample badges + monthly generator
+🧠 PRIORITY ORDER
+Matchmaking system
+Real-time game sessions
+Betting system
+Game logic
+Badge system
+UX polish
+
+If anything is unclear, make reasonable assumptions and proceed.

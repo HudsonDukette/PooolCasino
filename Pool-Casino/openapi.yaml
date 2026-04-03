@@ -1,0 +1,1011 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: PoolCasino API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: user
+    description: User operations
+  - name: pool
+    description: Global pool operations
+  - name: games
+    description: Game operations
+  - name: transactions
+    description: Transaction history
+  - name: leaderboard
+    description: Leaderboard operations
+  - name: admin
+    description: Admin operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Invalid input or username taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/stats:
+    get:
+      operationId: getUserStats
+      tags: [user]
+      summary: Get current user stats
+      responses:
+        "200":
+          description: User stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStats"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/claim-daily:
+    post:
+      operationId: claimDailyReward
+      tags: [user]
+      summary: Claim daily reward
+      responses:
+        "200":
+          description: Daily reward claimed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyRewardResponse"
+        "400":
+          description: Already claimed today
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /pool:
+    get:
+      operationId: getPool
+      tags: [pool]
+      summary: Get global pool info
+      responses:
+        "200":
+          description: Pool information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PoolInfo"
+
+  /games/roulette:
+    post:
+      operationId: playRoulette
+      tags: [games]
+      summary: Play roulette
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RouletteRequest"
+      responses:
+        "200":
+          description: Roulette result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouletteResult"
+        "400":
+          description: Invalid bet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /games/plinko:
+    post:
+      operationId: playPlinko
+      tags: [games]
+      summary: Play plinko
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlinkoRequest"
+      responses:
+        "200":
+          description: Plinko result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlinkoResult"
+        "400":
+          description: Invalid bet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /transactions:
+    get:
+      operationId: getTransactions
+      tags: [transactions]
+      summary: Get transaction history
+      parameters:
+        - name: game
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: number
+        - name: offset
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Transaction history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionList"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /leaderboard/richest:
+    get:
+      operationId: getRichestPlayers
+      tags: [leaderboard]
+      summary: Get richest players leaderboard
+      responses:
+        "200":
+          description: Richest players
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardList"
+
+  /leaderboard/biggest-winners:
+    get:
+      operationId: getBiggestWinners
+      tags: [leaderboard]
+      summary: Get biggest winners leaderboard
+      responses:
+        "200":
+          description: Biggest winners
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardList"
+
+  /leaderboard/biggest-bettors:
+    get:
+      operationId: getBiggestBettors
+      tags: [leaderboard]
+      summary: Get biggest bettors leaderboard
+      responses:
+        "200":
+          description: Biggest bettors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardList"
+
+  /leaderboard/recent-big-wins:
+    get:
+      operationId: getRecentBigWins
+      tags: [leaderboard]
+      summary: Get recent big wins
+      responses:
+        "200":
+          description: Recent big wins
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecentWinsList"
+
+  /admin/refill-pool:
+    post:
+      operationId: adminRefillPool
+      tags: [admin]
+      summary: Refill the global pool (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminRefillPoolRequest"
+      responses:
+        "200":
+          description: Pool refilled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminRefillPoolResponse"
+        "403":
+          description: Not admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/refill-player:
+    post:
+      operationId: adminRefillPlayer
+      tags: [admin]
+      summary: Refill a player's balance (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminRefillPlayerRequest"
+      responses:
+        "200":
+          description: Player balance refilled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminRefillPlayerResponse"
+        "403":
+          description: Not admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/change-username:
+    post:
+      operationId: changeUsername
+      tags: [user]
+      summary: Change username (costs coins)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeUsernameRequest"
+      responses:
+        "200":
+          description: Username changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangeProfileResponse"
+        "400":
+          description: Invalid or insufficient funds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/change-avatar:
+    post:
+      operationId: changeAvatar
+      tags: [user]
+      summary: Change avatar URL (costs coins)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeAvatarRequest"
+      responses:
+        "200":
+          description: Avatar changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangeProfileResponse"
+        "400":
+          description: Invalid or insufficient funds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/profile-change-costs:
+    get:
+      operationId: getProfileChangeCosts
+      tags: [user]
+      summary: Get costs for profile changes
+      responses:
+        "200":
+          description: Profile change costs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileChangeCosts"
+
+  /admin/settings:
+    get:
+      operationId: adminGetSettings
+      tags: [admin]
+      summary: Get all admin settings
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSettingsResponse"
+        "403":
+          description: Not admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: adminUpdateSettings
+      tags: [admin]
+      summary: Update admin settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUpdateSettingsRequest"
+      responses:
+        "200":
+          description: Settings updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSettingsResponse"
+        "403":
+          description: Not admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/players:
+    get:
+      operationId: adminListPlayers
+      tags: [admin]
+      summary: List all players (admin only)
+      responses:
+        "200":
+          description: Player list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminPlayerList"
+        "403":
+          description: Not admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+        password:
+          type: string
+          minLength: 6
+        email:
+          type: string
+          nullable: true
+        referralCode:
+          type: string
+          nullable: true
+      required:
+        - username
+        - password
+
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        message:
+          type: string
+      required:
+        - user
+        - message
+
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+        email:
+          type: string
+          nullable: true
+        balance:
+          type: number
+        isAdmin:
+          type: boolean
+        referralCode:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - username
+        - balance
+        - isAdmin
+        - createdAt
+
+    UserStats:
+      type: object
+      properties:
+        totalProfit:
+          type: number
+        biggestWin:
+          type: number
+        biggestBet:
+          type: number
+        gamesPlayed:
+          type: number
+        winStreak:
+          type: number
+        currentStreak:
+          type: number
+        totalWins:
+          type: number
+        totalLosses:
+          type: number
+        lastDailyClaim:
+          type: string
+          nullable: true
+        balance:
+          type: number
+      required:
+        - totalProfit
+        - biggestWin
+        - biggestBet
+        - gamesPlayed
+        - winStreak
+        - currentStreak
+        - totalWins
+        - totalLosses
+        - balance
+
+    DailyRewardResponse:
+      type: object
+      properties:
+        reward:
+          type: number
+        newBalance:
+          type: number
+        message:
+          type: string
+      required:
+        - reward
+        - newBalance
+        - message
+
+    PoolInfo:
+      type: object
+      properties:
+        totalAmount:
+          type: number
+        biggestWin:
+          type: number
+        biggestBet:
+          type: number
+        maxBet:
+          type: number
+        recentBigBets:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecentBet"
+      required:
+        - totalAmount
+        - biggestWin
+        - biggestBet
+        - maxBet
+        - recentBigBets
+
+    RecentBet:
+      type: object
+      properties:
+        username:
+          type: string
+        betAmount:
+          type: number
+        gameType:
+          type: string
+        result:
+          type: string
+        payout:
+          type: number
+        timestamp:
+          type: string
+      required:
+        - username
+        - betAmount
+        - gameType
+        - result
+        - payout
+        - timestamp
+
+    RouletteRequest:
+      type: object
+      properties:
+        betAmount:
+          type: number
+        color:
+          type: string
+          enum: [red, black]
+      required:
+        - betAmount
+        - color
+
+    RouletteResult:
+      type: object
+      properties:
+        won:
+          type: boolean
+        resultColor:
+          type: string
+        resultNumber:
+          type: number
+        betAmount:
+          type: number
+        payout:
+          type: number
+        newBalance:
+          type: number
+        winChance:
+          type: number
+      required:
+        - won
+        - resultColor
+        - resultNumber
+        - betAmount
+        - payout
+        - newBalance
+        - winChance
+
+    PlinkoRequest:
+      type: object
+      properties:
+        betAmount:
+          type: number
+        risk:
+          type: string
+          enum: [low, medium, high]
+      required:
+        - betAmount
+        - risk
+
+    PlinkoResult:
+      type: object
+      properties:
+        won:
+          type: boolean
+        multiplier:
+          type: number
+        path:
+          type: array
+          items:
+            type: object
+            properties:
+              x:
+                type: number
+              y:
+                type: number
+            required:
+              - x
+              - y
+        betAmount:
+          type: number
+        payout:
+          type: number
+        newBalance:
+          type: number
+        slot:
+          type: number
+        winChance:
+          type: number
+      required:
+        - won
+        - multiplier
+        - path
+        - betAmount
+        - payout
+        - newBalance
+        - slot
+        - winChance
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: number
+        gameType:
+          type: string
+        betAmount:
+          type: number
+        result:
+          type: string
+        payout:
+          type: number
+        multiplier:
+          type: number
+          nullable: true
+        timestamp:
+          type: string
+      required:
+        - id
+        - gameType
+        - betAmount
+        - result
+        - payout
+        - timestamp
+
+    TransactionList:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        total:
+          type: number
+      required:
+        - transactions
+        - total
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        rank:
+          type: number
+        username:
+          type: string
+        value:
+          type: number
+        label:
+          type: string
+      required:
+        - rank
+        - username
+        - value
+        - label
+
+    LeaderboardList:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderboardEntry"
+      required:
+        - entries
+
+    RecentWin:
+      type: object
+      properties:
+        username:
+          type: string
+        payout:
+          type: number
+        betAmount:
+          type: number
+        gameType:
+          type: string
+        multiplier:
+          type: number
+          nullable: true
+        timestamp:
+          type: string
+      required:
+        - username
+        - payout
+        - betAmount
+        - gameType
+        - timestamp
+
+    RecentWinsList:
+      type: object
+      properties:
+        wins:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecentWin"
+      required:
+        - wins
+
+    AdminRefillPoolRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+      required:
+        - amount
+
+    AdminRefillPoolResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        newPoolAmount:
+          type: number
+      required:
+        - message
+        - newPoolAmount
+
+    AdminRefillPlayerRequest:
+      type: object
+      properties:
+        userId:
+          type: number
+        amount:
+          type: number
+      required:
+        - userId
+        - amount
+
+    AdminRefillPlayerResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        newBalance:
+          type: number
+      required:
+        - message
+        - newBalance
+
+    AdminPlayer:
+      type: object
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+        balance:
+          type: number
+        isAdmin:
+          type: boolean
+        gamesPlayed:
+          type: number
+        totalWins:
+          type: number
+        totalLosses:
+          type: number
+      required:
+        - id
+        - username
+        - balance
+        - isAdmin
+        - gamesPlayed
+        - totalWins
+        - totalLosses
+
+    AdminPlayerList:
+      type: object
+      properties:
+        players:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminPlayer"
+      required:
+        - players
+
+    ChangeUsernameRequest:
+      type: object
+      properties:
+        newUsername:
+          type: string
+          minLength: 3
+          maxLength: 30
+      required:
+        - newUsername
+
+    ChangeAvatarRequest:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+      required:
+        - avatarUrl
+
+    ChangeProfileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        newBalance:
+          type: number
+        cost:
+          type: number
+      required:
+        - message
+        - newBalance
+        - cost
+
+    ProfileChangeCosts:
+      type: object
+      properties:
+        usernameChangeCost:
+          type: number
+        avatarChangeCost:
+          type: number
+      required:
+        - usernameChangeCost
+        - avatarChangeCost
+
+    AdminSettingsResponse:
+      type: object
+      properties:
+        usernameChangeCost:
+          type: number
+        avatarChangeCost:
+          type: number
+      required:
+        - usernameChangeCost
+        - avatarChangeCost
+
+    AdminUpdateSettingsRequest:
+      type: object
+      properties:
+        usernameChangeCost:
+          type: number
+          nullable: true
+        avatarChangeCost:
+          type: number
+          nullable: true

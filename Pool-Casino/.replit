@@ -1,0 +1,37 @@
+modules = ["nodejs-24", "python-3.11", "postgresql-16"]
+
+[[artifacts]]
+id = "artifacts/api-server"
+
+[[artifacts]]
+id = "artifacts/mockup-sandbox"
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[nix]
+channel = "stable-25_05"
+packages = ["mailutils", "zip"]
+
+[userenv]
+
+[userenv.shared]
+VAPID_PUBLIC_KEY = "BLKPQswCZ4UTJyjUaejIxf9e6VE5a6Bsit-yrggKGY3Bs0BMet4UatL-NFca37p0RRxORrS1cZ5o5I0WTfiiAic"
+VAPID_PRIVATE_KEY = "2vUTByIq7xyF3D_d-5BH4QlwI8IY68CJRg_pCLuIJjc"
+VAPID_EMAIL = "mailto:hudsoduk@gmail.com"

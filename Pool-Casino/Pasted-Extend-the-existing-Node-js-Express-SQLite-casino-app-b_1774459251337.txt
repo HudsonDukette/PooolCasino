@@ -1,0 +1,271 @@
+Extend the existing Node.js + Express + SQLite casino app by adding **8 new games** with a modular backend system.
+
+All games must:
+
+* Use server-side logic (no client-side trust)
+* Integrate with user balance and global pool
+* Log every bet in the bets table
+* Follow dynamic probability and payout rules
+* Be structured so more games can be added easily
+
+---
+
+# 🧱 GENERAL GAME ENGINE REQUIREMENTS
+
+Create a reusable system:
+
+## Core function:
+
+processBet(userId, gameType, betAmount, gameData)
+
+This function should:
+
+* Validate bet (min, max, balance)
+* Calculate outcome
+* Update:
+
+  * user balance
+  * global pool
+* Log bet in database
+* Return result to frontend
+
+---
+
+# 🎮 ADD THE FOLLOWING GAMES
+
+---
+
+# 1. 🎲 Dice Roll
+
+## Gameplay:
+
+* User bets on:
+
+  * exact number (1–6)
+  * or high/low
+
+## Logic:
+
+* Roll random number 1–6
+
+## Payouts:
+
+* Exact: 5x
+* High/Low: 1.8x
+
+---
+
+# 2. 🪙 Coin Flip
+
+## Gameplay:
+
+* Choose heads or tails
+
+## Logic:
+
+* 50/50 outcome
+
+## Payout:
+
+* 1.95x (small house edge)
+
+---
+
+# 3. 💥 Crash Game
+
+## Gameplay:
+
+* Multiplier increases over time (1.0x → ?)
+* Player must cash out before crash
+
+## Logic:
+
+* Random crash point generated:
+
+  * use exponential distribution
+
+## Backend:
+
+* simulate multiplier growth
+* return crash value
+
+## Player:
+
+* submits "cash out" request before crash
+
+---
+
+# 4. 🃏 Blackjack (Simplified)
+
+## Gameplay:
+
+* Player vs dealer
+* Cards 1–11 (no suits needed)
+
+## Logic:
+
+* Deal 2 cards each
+* Player can hit/stand
+* Dealer hits until 17+
+
+## Outcome:
+
+* win / lose / push
+
+## Payout:
+
+* win = 2x
+* blackjack = 2.5x
+
+---
+
+# 5. 🎰 Slots
+
+## Gameplay:
+
+* 3 reels
+* symbols randomly selected
+
+## Symbols:
+
+* common → low payout
+* rare → high payout
+
+## Example:
+
+* 3 match → 5x–50x
+* 2 match → 1.5x
+
+---
+
+# 6. 🎯 Number Guess
+
+## Gameplay:
+
+* Guess number between 1–100
+
+## Logic:
+
+* random number generated
+
+## Payout:
+
+* closer guess = higher multiplier
+
+---
+
+# 7. 🧨 Mines (like Minesweeper)
+
+## Gameplay:
+
+* grid with hidden mines
+* each safe click increases multiplier
+
+## Logic:
+
+* random mine placement
+
+## Player:
+
+* chooses when to cash out
+
+---
+
+# 8. 🎡 Wheel Spin
+
+## Gameplay:
+
+* wheel with segments:
+
+  * 0.5x, 1x, 2x, 5x, 10x
+
+## Logic:
+
+* weighted probabilities
+
+---
+
+# 🧠 PROBABILITY + BALANCE RULES
+
+All games must:
+
+* scale payouts based on bet size vs pool
+
+* cap payouts:
+  max_payout = pool * 0.05
+
+* prevent:
+
+  * negative pool
+  * infinite inflation
+
+---
+
+# 🗄️ DATABASE UPDATES
+
+Extend bets table to support:
+
+* game_data (JSON)
+* outcome_details (JSON)
+
+---
+
+# 🎨 FRONTEND REQUIREMENTS
+
+## Games Page:
+
+* grid of all games
+* each clickable
+
+## Each Game Page:
+
+* bet input
+* controls
+* result display
+* simple animation
+
+---
+
+# 🔌 ROUTES
+
+Create routes:
+
+POST /api/game/dice
+POST /api/game/coinflip
+POST /api/game/crash
+POST /api/game/blackjack
+POST /api/game/slots
+POST /api/game/guess
+POST /api/game/mines
+POST /api/game/wheel
+
+---
+
+# ⚡ UX DETAILS
+
+* instant feedback
+* smooth animations
+* show multiplier clearly
+* show win/loss visually
+
+---
+
+# 🔒 SECURITY
+
+* validate all inputs
+* enforce balance checks
+* backend decides outcomes
+* rate limit all endpoints
+
+---
+
+# 🚀 FINAL GOAL
+
+A modular casino system where:
+
+* multiple games exist
+* all use shared pool economy
+* easy to add future games
+* consistent UI/UX across all games
+
+Ensure everything runs cleanly in Replit and integrates with existing system.
